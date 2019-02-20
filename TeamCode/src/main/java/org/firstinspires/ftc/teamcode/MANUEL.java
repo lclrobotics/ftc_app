@@ -26,24 +26,25 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.firstinspires.ftc.Team11351;
+/*___
+<|°_°|>
+ /|_|\
+° |_| °
+  / \
+ °  ° */
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.Team11351.HardwarePushbot;
-//org.firstinspires.ftc.Team11351.HardwarePushbot
-//C:\Users\lcl\Downloads\ftc_app-mastertest\ftc_app-master\TeamCode\src\main\java\org\firstinspires\ftc\teamcode\HardwarePushbot.java
+import org.firstinspires.ftc.teamcode.HardwarePushbot;
 
 /**
  * This file provides basic Telop driving for a Pushbot robot.
  * The code is structured as an Iterative OpMode
- * 
+ *
  * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
  * All device access is managed through the HardwarePushbot class.
  *
@@ -55,21 +56,11 @@ import org.firstinspires.ftc.Team11351.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="TBirds:Controller Mode", group="Pushbot")
-public class TBirds_Controller_Mode extends OpMode{
+@TeleOp(name="MANUEL", group="Pushbot")
+public class MANUEL extends OpMode{
 
     /* Declare OpMode members. */
-    org.firstinspires.ftc.Team11351.HardwarePushbot robot       = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
-                                                         // could also use HardwarePushbotMatrix class.
-    double          clawOffset  = 0.0 ;                  // Servo mid position
-    final double    CLAW_SPEED  = 0.02 ;                 // sets rate to move servo
-    double          grabber_flipOffset = 0.0;
-    double          grabber_clawOffset = 0.0;
-
-    public DcMotor side_to_side_extendy_arm_thing = null;
-    public Servo grabber_flip = null;
-    public Servo grabber_claw = null;
-
+    HardwarePushbot robot       = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -79,10 +70,6 @@ public class TBirds_Controller_Mode extends OpMode{
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
-
-        /*side_to_side_extendy_arm_thing = hardwareMap.get(DcMotor.class, "extend");
-        grabber_flip = hardwareMap.get(Servo.class, "grabber_flip");
-        grabber_claw = hardwareMap.get(Servo.class, "grabber_claws");*/
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
@@ -100,7 +87,6 @@ public class TBirds_Controller_Mode extends OpMode{
      */
     @Override
     public void start() {
-
     }
 
     /*
@@ -108,81 +94,70 @@ public class TBirds_Controller_Mode extends OpMode{
      */
     @Override
     public void loop() {
+        //Motors:
+        //  left and right drive - joysticks
+        //  intake_turn - y and a
+        //      replaced 'lift' may want to change back if they add it again
+        //  bucket - b and x
+        //  intake_extension - dpad_down and dpad_up
+        //      replaced 'extension' - not sure what it was for?
+        //  intake - right_stick_button for on/off
+        //drop lift at first, drive backwards, lower lift
+
         double left;
         double right;
-
+        double up;
+        double down;
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
         left = -gamepad1.left_stick_y;
         right = -gamepad1.right_stick_y;
+        up    = gamepad1.right_trigger;
+        down  =gamepad1.left_trigger;
+
 
         robot.leftDrive.setPower(left);
         robot.rightDrive.setPower(right);
+        if (up>=0)
+            robot.bucket.setPower(up);
+        else if (down>=0)
+            robot.bucket.setPower(down);
+        else
+            robot.bucket.setPower(0.0);
 
-        // Use gamepad left & right Bumpers to open and close the claw
+        // Use gamepad buttons to move the HALF up (Y) and down (A)
+        if (gamepad1.y)
+            robot.intake_turn.setPower(robot.HALF_UP_POWER);
+        else if (gamepad1.a)
+            robot.intake_turn.setPower(robot.HALF_DOWN_POWER);
+        else
+            robot.intake_turn.setPower(0.0);
 
-        if (gamepad2.right_bumper)
-            clawOffset +=  CLAW_SPEED;
-        else if (gamepad2.left_bumper)
-            clawOffset -= CLAW_SPEED;
-        // Move both servos to new position.  Assume servos are mirror image of each other.
-        clawOffset = Range.clip(clawOffset, -0.5, 0.5);
-        robot.leftClaw.setPosition(robot.MID_SERVO + clawOffset);
-        robot.rightClaw.setPosition(robot.MID_SERVO - clawOffset);
+        if (gamepad1.b)
+            robot.bucket.setPower(robot.HALF_UP_POWER);
+        else if (gamepad1.x)
+            robot.bucket.setPower(robot.HALF_DOWN_POWER);
+        else
+            robot.bucket.setPower(0.0);
 
+        if (gamepad1.dpad_up)
+            robot.intake_extension.setPower(robot.HALF_UP_POWER);
+        else if (gamepad1.dpad_down)
+            robot.intake_extension.setPower(robot.HALF_DOWN_POWER);
+        else
+            robot.intake_extension.setPower(0.0);
 
-
-        /*if (gamepad1.dpad_up || gamepad2.dpad_up){
-            grabber_flipOffset += CLAW_SPEED;
-        }
-        else if (gamepad1.dpad_down || gamepad2.dpad_down){
-            grabber_flipOffset -= CLAW_SPEED;
-        }
-        else{
-            grabber_flipOffset = 0.0;
-        }
-        grabber_flipOffset = Range.clip(grabber_flipOffset, -1.5  , 1.5);
-        grabber_flip.setPosition(robot.MID_SERVO + grabber_flipOffset);
-
-        if (gamepad1.dpad_left || gamepad2.dpad_left) {
-            grabber_clawOffset -= CLAW_SPEED;
-        }
-        else if (gamepad1.dpad_right || gamepad2.dpad_right) {
-            grabber_clawOffset += CLAW_SPEED;
-        }
-        grabber_clawOffset = Range.clip(grabber_clawOffset, -1.5, 1.5);
-        grabber_claw.setPosition(robot.MID_SERVO + grabber_clawOffset);*/
-
-        //same thing as other servs for idol grabber
+        if (gamepad1.right_stick_button)
+            if (robot.intake.getPower() > 0.0)
+                robot.intake.setPower(0.0);
+            else
+                robot.intake.setPower(robot.HALF_UP_POWER);
 
 
 
-
-        // Use gamepad buttons to move the arm up (Y) and down (A)
-        if (gamepad2.y){
-            robot.leftArm.setPower(robot.ARM_UP_POWER);}
-        else if (gamepad2.a){
-            telemetry.addData("test", "gamepad2.a");
-            robot.leftArm.setPower(robot.ARM_DOWN_POWER);}
-        else{
-            robot.leftArm.setPower(0.0);
-            telemetry.addData("stop", "is on");}
-
-
-
-
-        /*if((gamepad1.right_trigger >= 0.9 )|| (gamepad2.right_trigger >= 0.9)){
-            side_to_side_extendy_arm_thing.setPower(-0.1);}
-        else if((gamepad1.left_trigger >=  0.9) || (gamepad2.left_trigger >= 0.9)){
-            side_to_side_extendy_arm_thing.setPower(-0.1);}
-        else{
-            side_to_side_extendy_arm_thing.setPower(0.0);}*/
         // Send telemetry message to signify robot running;
-        telemetry.addData("armPower", "%.2f", robot.leftArm.getPower());
-        telemetry.addData("claw",  "Offset = %.2f", clawOffset);
         telemetry.addData("left",  "%.2f", left);
         telemetry.addData("right", "%.2f", right);
-        telemetry.addData("triggers", "R:%.2f L: %.2f", gamepad1.right_trigger, gamepad1.left_trigger);
     }
 
     /*

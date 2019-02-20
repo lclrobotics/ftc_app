@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.Team11351;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -36,7 +36,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.HardwarePushbot;
+import org.firstinspires.ftc.Team11351.HardwarePushbot;
 //C:\Users\lcl\Downloads\ftc_app-mastertest\ftc_app-master\TeamCode\src\main\java\org\firstinspires\ftc\teamcode\HardwarePushbot.java
 
 /**
@@ -59,7 +59,7 @@ import org.firstinspires.ftc.teamcode.HardwarePushbot;
 public class TBirds_DriverController_OpMode extends OpMode{
 
     /* Declare OpMode members. */
-    org.firstinspires.ftc.teamcode.HardwarePushbot robot       = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
+    org.firstinspires.ftc.Team11351.HardwarePushbot robot       = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
     // could also use HardwarePushbotMatrix class.
     double          topClawOffset  = 0.0 ;                  // Servo mid position
     double          botClawOffset  = 0.0 ;

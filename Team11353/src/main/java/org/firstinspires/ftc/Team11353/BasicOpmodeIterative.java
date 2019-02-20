@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.team11353;
+package org.firstinspires.ftc.Team11353;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -55,7 +55,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 @TeleOp(name="Basic: Iterative OpMode", group="Iterative Opmode")
 //@Disabled
-public class BasicOpMode_Iterative extends OpMode
+public class BasicOpmodeIterative extends OpMode
 {
     // Declare OpMode members.
     double clawOffset = 0.0;

@@ -27,64 +27,29 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.team11353;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 
-//import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
+import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
-/**
- * This file illustrates the concept of driving a path based on time.
- * It uses the common Pushbot hardware class to define the drive on the robot.
- * The code is structured as a LinearOpMode
- *
- * The code assumes that you do NOT have encoders on the wheels,
- *   otherwise you would use: PushbotAutoDriveByEncoder;
- *
- *   The desired path in this example is:
- *   - Drive forward for 3 seconds
- *   - Spin right for 1.3 seconds
- *   - Drive Backwards for 1 Second
- *   - Stop and close the claw.
- *
- *  The code is written in a simple form with no optimizations.
- *  However, there are several ways that this type of sequence could be streamlined,
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
+/*
+
  */
 
-@Autonomous(name="Pushbot: Auto Drive By Time", group="Pushbot")
-//Disabled
-public class Pushbot_drivebytime extends LinearOpMode {
+@Autonomous(name="Autonomous", group="Pushbot")
+public class PushbotAutoDriveByTime_Linear extends LinearOpMode {
 
     /* Declare OpMode members. */
-    //org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot robot   = new HardwarePushbot();   // Use a Pushbot's hardware
+    HardwarePushbot         robot   = new HardwarePushbot();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
 
 
     static final double     FORWARD_SPEED = 0.6;
     static final double     TURN_SPEED    = 0.5;
-
-    public DcMotor leftDrive = null;
-    public DcMotor rightDrive = null;
-    //public DcMotor arm = null;
-    //public Servo leftClaw = null;
-    //public Servo rightClaw = null;
-    //private Servo relic = null;
-    //private Servo hook = null;
-    public Servo color = null;
-    public ColorSensor jewel = null;
-
-
-
-
 
     @Override
     public void runOpMode() {
@@ -93,11 +58,7 @@ public class Pushbot_drivebytime extends LinearOpMode {
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
          */
-
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        color      = hardwareMap.get(Servo.class, "color");
-        jewel      = hardwareMap.get(ColorSensor.class, "jewel");
+        robot.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to run");    //
@@ -108,30 +69,8 @@ public class Pushbot_drivebytime extends LinearOpMode {
 
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
-        //Actual step 1: Deploy color
-
-        color.setPosition(0);
-
-        //Actual step 2: read color
-
-        if (jewel.red()>= 10) {
-            leftDrive.setPower(FORWARD_SPEED);
-            rightDrive.setPower(FORWARD_SPEED);
-            runtime.reset();
-            sleep (1000);
-        }
-        else if (jewel.blue() >=10){
-            leftDrive.setPower(-FORWARD_SPEED);
-            rightDrive.setPower(-FORWARD_SPEED);
-            runtime.reset();
-            sleep(1000);
-        }
-
-
-
-
         // Step 1:  Drive forward for 3 seconds
-        /*robot.leftDrive.setPower(FORWARD_SPEED);
+        robot.leftDrive.setPower(FORWARD_SPEED);
         robot.rightDrive.setPower(FORWARD_SPEED);
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 3.0)) {
@@ -165,6 +104,6 @@ public class Pushbot_drivebytime extends LinearOpMode {
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
-        sleep(1000);*/
+        sleep(1000);
     }
 }
